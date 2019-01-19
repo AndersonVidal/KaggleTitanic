@@ -1,0 +1,25 @@
+setwd("/home/anderson/Documents/Kangle/titanicR")
+
+library(tidyverse) 
+library(rpart) 
+library(randomForest)
+library(modelr)
+
+titanic.train <- read_csv(file = "train.csv")
+titanic.train <- na.omit(titanic.train)
+titanic.test <- read_csv(file = "test.csv")
+titanic.test <- na.omit(titanic.test)
+
+summary(titanic.train)
+
+regLinear <- lm(Survived ~ Pclass + Sex + Age + SibSp + Parch + Fare + Cabin + Embarked, data = titanic.train)
+mae(model = ft, data = titanic.train)
+
+splitData <- resample_partition(titanic.train, c(test = 0.3, train = 0.7))
+lapply(splitData, dim)
+
+regLinear2 <- rpart(Survived ~ Pclass + Sex + Age + SibSp + Parch + Fare + Cabin + Embarked, data = splitData$train)
+mae(model = regLinear2, data = splitData$test)
+
+summary(ft)
+anova(ft)
